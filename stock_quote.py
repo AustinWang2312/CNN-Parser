@@ -25,6 +25,6 @@ class Visualizer:
         plt.show()
 
 
-x=Stock("TSLA")
-y=Visualizer(x)
-y.graph('2010-07-10 04:22:00')
+#x=Stock("TSLA")
+#y=Visualizer(x)
+#y.graph('2010-07-10 04:22:00')

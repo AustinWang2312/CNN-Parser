@@ -41,14 +41,29 @@ class WebParser():
 
 class CNNParser(WebParser):
 
-    def extract_months(self):
-        home_url="https://www.cnn.com/article/sitemap-2019.html"
+    def extract_years(self):
+        counter=2011
+        years=[]
+        while (counter<2021):
+            years.append("https://www.cnn.com/article/sitemap-"+str(counter)+".html")
+            counter+=1
+        print (years)
+        return years
+
+    def extract_months(self,url):
+        home_url=url
         page=req.get(home_url)
         soup=BeautifulSoup(page.content, 'html.parser')
+        months=soup.find("section")
+        month_href=months.find_all("a")
+        month_urls=[]
+        for url in month_href:
+            month_urls.append("https://www.cnn.com"+url['href'])
+        print (month_urls)
+        return month_urls
 
-
-    def extract_urls(self):
-        home_url= "https://www.cnn.com/article/sitemap-2019-12.html"
+    def extract_urls(self,url):
+        home_url= url
         page=req.get(home_url)
         soup=BeautifulSoup(page.content, 'html.parser')
         links=soup.find_all(attrs={"data-analytics":"_list-hierarchical-xs_article_"})
@@ -59,10 +74,8 @@ class CNNParser(WebParser):
         url_list=[]
         for url in hrefs:
             url_list.append(url['href'])
-
-        print(len(url_list))
-
-
+        #print(url_list)
+        return url_list
 
     def get_release_datetime(self):
         meta_data=self.soup.find_all("meta",limit=7)
@@ -93,12 +106,14 @@ class ReutersParser(WebParser):
     
     
 
-
-url="https://www.cnn.com/2020/07/29/politics/donald-trump-suburbs-housing/index.html"
+#url="https://www.cnn.com/2020/07/29/politics/donald-trump-suburbs-housing/index.html"
 #url="https://www.reuters.com/article/us-usa-tech-congress/u-s-lawmakers-accuse-big-tech-of-crushing-rivals-to-boost-profits-idUSKCN24U1FI"
 #url2="https://www.reuters.com/article/us-science-stonehenge/scientists-solve-mystery-of-the-origin-of-stonehenge-megaliths-idUSKCN24U2VG"
-x=CNNParser(url)
-x.extract_urls()
+#x=CNNParser(url)
+#x.extract_urls()
+#x.extract_years()
+#x.extract_months("https://www.cnn.com/article/sitemap-2011.html")
+#x.extract_urls("https://www.cnn.com"+'/article/sitemap-2011-10.html')
 #x=ReutersParser(url2)
 #print(x.get_title())
 #x.get_body_text()
